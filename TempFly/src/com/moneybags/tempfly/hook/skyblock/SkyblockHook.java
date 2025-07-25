@@ -607,7 +607,7 @@ public abstract class SkyblockHook extends TerritoryHook {
 	
 	@Override
 	public Genre getGenre() {
-		return Genre.SKYBLOCK;
+		return null;
 	}
 	
 	@Override

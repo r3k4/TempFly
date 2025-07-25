@@ -15,7 +15,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import com.moneybags.tempfly.aesthetic.ActionBarAPI;
 import com.moneybags.tempfly.aesthetic.ClipAPI;
-import com.moneybags.tempfly.aesthetic.MvdWAPI;
+// import com.moneybags.tempfly.aesthetic.MvdWAPI;
 import com.moneybags.tempfly.aesthetic.TitleAPI;
 import com.moneybags.tempfly.aesthetic.particle.Particles;
 import com.moneybags.tempfly.command.CommandManager;
@@ -140,10 +140,10 @@ public class TempFly extends JavaPlugin {
 		
 		TitleAPI.initialize(this);
 		
-		if (Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI")) {
-			Console.info("Initializing MvdwAPI");
-			MvdWAPI.initialize(this);
-		}
+		// if (Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI")) {
+		// 	Console.info("Initializing MvdwAPI");
+		// 	MvdWAPI.initialize(this);
+		// }
 		if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
 			Console.info("Initializing ClipAPI");
 			ClipAPI.initialize(this);

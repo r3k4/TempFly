@@ -495,9 +495,9 @@ public class DataBridge implements DataFileHolder {
 			case ISLAND_SETTINGS:
 				HookManager hooks = tempfly.getHookManager();
 				TempFlyHook[] hook;
-				if ((hook = hooks.getGenre(Genre.SKYBLOCK)) != null && hook.length > 0) {
-					return (DataFileHolder) hook[0];
-				}
+				// if ((hook = hooks.getGenre(Genre.SKYBLOCK)) != null && hook.length > 0) {
+				// 	return (DataFileHolder) hook[0];
+				// }
 				break;
 			default:
 				return null;
