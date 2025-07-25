@@ -40,10 +40,28 @@ public class Particles {
 	public static void play(Location loc, String s) {
 		if (!oldParticles) {
 			Particle particle = null;
-			try {particle = Particle.valueOf(s.toUpperCase());} catch (Exception e1) {
-				try {particle = Particle.valueOf(V.particleType.toUpperCase());} catch (Exception e2) {
-					particle = Particle.VILLAGER_HAPPY;
-				};
+			try {
+				particle = Particle.valueOf(s.toUpperCase());
+			} catch (Exception e1) {
+				try {
+					particle = Particle.valueOf(V.particleType.toUpperCase());
+				} catch (Exception e2) {
+					// Try common fallback particles that should exist in modern versions
+					try {
+						particle = Particle.HEART;
+					} catch (Exception e3) {
+						try {
+							particle = Particle.FLAME;
+						} catch (Exception e4) {
+							// If no particles are available, skip spawning
+							return;
+						}
+					}
+				}
+			}
+			
+			if (particle == null) {
+				return; // Skip if no valid particle found
 			}
 			
 			Class<?> c = particle.getDataType();
@@ -57,20 +75,58 @@ public class Particles {
 					loc.getWorld().spawnParticle(particle, loc, 1, 0, 0, 0, 0.1);
 				}
 			} catch (Exception e) {
-				loc.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, loc, 1, 0, 0, 0, 0.1);
+				// Try fallback particles that should exist in modern versions
+				try {
+					loc.getWorld().spawnParticle(Particle.HEART, loc, 1, 0, 0, 0, 0.1);
+				} catch (Exception e2) {
+					try {
+						loc.getWorld().spawnParticle(Particle.FLAME, loc, 1, 0, 0, 0, 0.1);
+					} catch (Exception e3) {
+						// Skip if no fallback particles work
+						return;
+					}
+				}
 			}
 		} else {
 			Effect particle = null;
 			// This effect value crashes clients and prevents them from joining the server again.
 			if (s != null && s.equalsIgnoreCase("ITEM_BREAK")) {
-				s = "HAPPY_VILLAGER";
+				s = "VILLAGER_HAPPY";
 			}
-			try {particle = Effect.valueOf(s.toUpperCase());} catch (Exception e1) {
-				try {particle = Effect.valueOf(V.particleType);} catch (Exception e2) {
-					particle = Effect.valueOf("HAPPY_VILLAGER");	
+			try {
+				particle = Effect.valueOf(s.toUpperCase());
+			} catch (Exception e1) {
+				try {
+					particle = Effect.valueOf(V.particleType.toUpperCase());
+				} catch (Exception e2) {
+					// Try common fallback effects that should exist in older versions
+					try {
+						particle = Effect.valueOf("VILLAGER_HAPPY");
+					} catch (Exception e3) {
+						try {
+							particle = Effect.valueOf("HEART");
+						} catch (Exception e4) {
+							try {
+								particle = Effect.valueOf("FLAME");
+							} catch (Exception e5) {
+								// If no effects are available, skip spawning
+								return;
+							}
+						}
+					}
 				}
 			}
-			loc.getWorld().playEffect(loc, particle, 1);
+			
+			if (particle == null) {
+				return; // Skip if no valid effect found
+			}
+			
+			try {
+				loc.getWorld().playEffect(loc, particle, 1);
+			} catch (Exception e) {
+				// Skip if effect playback fails
+				return;
+			}
 		}
 	}
 	
