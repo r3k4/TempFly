@@ -68,6 +68,7 @@ public class LegacyActionBar extends ActionBar {
         	  }
         	  craftPlayerHandleMethod = craftPlayerClass.getDeclaredMethod("getHandle");
         } catch (Exception e) {
+        	tempfly.getLogger().warning("Failed to initialize LegacyActionBar for NMS version: " + nmsver + ". This server version may not be supported by this method.");
         	e.printStackTrace();
         }
         
@@ -77,6 +78,12 @@ public class LegacyActionBar extends ActionBar {
     public void sendActionBar(final Player player, final String message) {
         if (!player.isOnline()) {
         	return;
+        }
+        
+        // Prevent NullPointerException if reflection initialization failed
+        if (craftPlayerClass == null || craftPlayerHandleMethod == null || packetPlayOutChatClass == null) {
+            tempfly.getLogger().warning("LegacyActionBar reflection classes not initialized. This usually means the plugin needs updating for this server version.");
+            return;
         }
         
         try {
